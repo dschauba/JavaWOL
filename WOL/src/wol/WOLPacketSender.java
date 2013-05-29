@@ -38,8 +38,7 @@ public class WOLPacketSender {
 				bois.write(targetMAC);
 			}				
 
-			socket.write(addr,bois.toByteArray());	
-			socket.close();
+			socket.write(addr,bois.toByteArray());				
 			success = true;
 		} catch (IllegalStateException e) {
 			e.printStackTrace();

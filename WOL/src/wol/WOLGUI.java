@@ -3,6 +3,11 @@ package wol;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.util.Arrays;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,6 +34,7 @@ class WOLGUI extends JFrame implements ActionListener{
 		this.setVisible(true);
 		this.addDummyHost();
 	}
+	
 	
 	private void addDummyHost(){		
 		String ip = "192.168.178.10";
@@ -95,4 +101,3 @@ class WOLGUI extends JFrame implements ActionListener{
 		new WOLGUI();
 	}	
 }
-
