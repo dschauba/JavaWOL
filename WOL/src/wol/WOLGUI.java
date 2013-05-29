@@ -3,10 +3,6 @@ package wol;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.util.Arrays;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;

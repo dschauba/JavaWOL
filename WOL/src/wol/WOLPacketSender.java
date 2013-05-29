@@ -3,11 +3,14 @@ package wol;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Arrays;
-
 import org.savarese.rocksaw.net.RawSocket;
 
 public class WOLPacketSender {
+	private static final byte[] broadcastMAC = {(byte)0xff,(byte)0xff,(byte)0xff,
+												(byte)0xff,(byte)0xff,(byte)0xff};
+	private static final byte[] sourcePort = {0x2a,0x2a};
+	//dest port 40000
+	private static final byte[] destinationPort = {(byte)0x9c,0x40};
 	public static boolean sendMagicPacket(Host host){
 		boolean success = false;
 		RawSocket socket = new RawSocket();
@@ -17,27 +20,20 @@ public class WOLPacketSender {
 			socket.setReceiveTimeout(10000);
 			socket.setIPHeaderInclude(false);
 			InetAddress addr = InetAddress.getByName(host.getBroadcast());
-
-			byte[] targetMAC = Utils.macHex2Byte(host.getMac());			
-			byte[] broadcast = Utils.macHex2Byte("FF:FF:FF:FF:FF:FF");		
-			System.out.println(Arrays.toString(targetMAC));		
-			System.out.println(Integer.parseInt("0e",16));
-			System.out.println(Integer.toHexString(-40));
-
-			ByteArrayOutputStream bois = new ByteArrayOutputStream();
-			//src port 55437
-			bois.write(new byte[]{-40,-115});
-			//dest port
-			bois.write(new byte[]{0x2f,-1});
+			byte[] targetMAC = Utils.macHex2Byte(host.getMac());		
+			
+			ByteArrayOutputStream bois = new ByteArrayOutputStream();	
+			bois.write(sourcePort);			
+			bois.write(destinationPort);
 			//data length
 			bois.write(new byte[]{0x00,0x6E});
 			//checksum disable
 			bois.write(new byte[]{0x00,0x00});
-			bois.write(broadcast);	
+			bois.write(broadcastMAC);	
+			//repeat target MAC 16x
 			for(int index=0;index<16;index++){
 				bois.write(targetMAC);
-			}				
-
+			}		
 			socket.write(addr,bois.toByteArray());				
 			success = true;
 		} catch (IllegalStateException e) {
